@@ -47,7 +47,7 @@ function deal!(deck::Hand, n::Integer)
     for i = 1:n
         new_hand[i] = deck[order[i]]
     end
-    deck -= new_hand
+    deck -= Hand(new_hand)
     return Hand(new_hand)
 end
 
