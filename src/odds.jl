@@ -22,5 +22,5 @@ function get_preflop_odds(; N = 1000)
                 Hand([]), N = N)
         end
     end
-    return preflop_odds_table
+    return preflop_odds
 end
