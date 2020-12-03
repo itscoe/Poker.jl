@@ -4,8 +4,8 @@ function calculate_odds(self::Hand, table::Hand; N = 1_000)
     wins = 0
     for i = 1:N
         deck = fresh_deck - self - table
-        opp = deal!(deck, 2)
-        extra_cards = deal!(deck, 5 - length(table))
+        opp, deck = deal(deck, 2)
+        extra_cards, deck = deal(deck, 5 - length(table))
         if opp + table + extra_cards < self + table + extra_cards
             wins += 1
         end

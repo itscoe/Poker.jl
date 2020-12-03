@@ -41,14 +41,14 @@ function Base.:-(x::Hand, y::Hand)
     return Hand(new_hand)
 end
 
-function deal!(deck::Hand, n::Integer)
+function deal(deck::Hand, n::Integer)
     new_hand = Array{Card}(undef, n)
     order = randperm(length(deck))
     for i = 1:n
         new_hand[i] = deck[order[i]]
     end
-    deck[] -= Hand(new_hand)
-    return Hand(new_hand)
+    deck -= Hand(new_hand)
+    return Hand(new_hand), deck
 end
 
 function cards(hand::Hand)

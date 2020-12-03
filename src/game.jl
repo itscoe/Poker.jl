@@ -52,13 +52,13 @@ function get_return(self_strat::Float64, opp_strat::Float64;
     if dealer == "opp" # Opponent deals
         self_return -= big_blind
         opp_return -= small_blind
-        self_hand = deal!(deck, 2)
-        opp_hand = deal!(deck, 2)
+        self_hand, deck = deal(deck, 2)
+        opp_hand, deck = deal(deck, 2)
     else # Self deals
         self_return -= small_blind
         opp_return -= big_blind
-        opp_hand = deal!(deck, 2)
-        self_hand = deal!(deck, 2)
+        opp_hand, deck = deal(deck, 2)
+        self_hand, deck = deal(deck, 2)
     end
     pot += big_blind + small_blind
     if using_preflop_odds
@@ -79,7 +79,8 @@ function get_return(self_strat::Float64, opp_strat::Float64;
     to_return && return self_return
 
     # Flop
-    table += deal!(deck, 3)
+    dealt, deck = deal(deck, 3)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
@@ -89,7 +90,8 @@ function get_return(self_strat::Float64, opp_strat::Float64;
     to_return && return self_return
 
     # Turn
-    table += deal!(deck, 1)
+    dealt, deck = deal(deck, 1)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
@@ -99,7 +101,8 @@ function get_return(self_strat::Float64, opp_strat::Float64;
     to_return && return self_return
 
     # River
-    table += deal!(deck, 1)
+    dealt, deck = deal(deck, 1)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
@@ -132,13 +135,13 @@ function get_return(self_strat::Array{Float64}, opp_strat::Array{Float64};
     if dealer == "opp" # Opponent deals
         self_return -= big_blind
         opp_return -= small_blind
-        self_hand = deal!(deck, 2)
-        opp_hand = deal!(deck, 2)
+        self_hand, deck = deal(deck, 2)
+        opp_hand, deck = deal(deck, 2)
     else # Self deals
         self_return -= small_blind
         opp_return -= big_blind
-        opp_hand = deal!(deck, 2)
-        self_hand = deal!(deck, 2)
+        opp_hand, deck = deal(deck, 2)
+        self_hand, deck = deal(deck, 2)
     end
     pot += big_blind + small_blind
     if using_preflop_odds
@@ -160,7 +163,8 @@ function get_return(self_strat::Array{Float64}, opp_strat::Array{Float64};
     to_return && return self_return
 
     # Flop
-    table += deal!(deck, 3)
+    dealt, deck = deal(deck, 3)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
@@ -171,7 +175,8 @@ function get_return(self_strat::Array{Float64}, opp_strat::Array{Float64};
     to_return && return self_return
 
     # Turn
-    table += deal!(deck, 1)
+    dealt, deck = deal(deck, 1)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
@@ -182,7 +187,8 @@ function get_return(self_strat::Array{Float64}, opp_strat::Array{Float64};
     to_return && return self_return
 
     # River
-    table += deal!(deck, 1)
+    dealt, deck = deal(deck, 1)
+    table += dealt
     self_prob, opp_prob = calculate_odds(self_hand, table, N = 100),
         calculate_odds(opp_hand, table, N = 100)
 
