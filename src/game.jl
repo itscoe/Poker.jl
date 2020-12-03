@@ -231,5 +231,6 @@ function get_returns_table(;
             returns_table[i, j] = get_returns(i / 100, j / 100,
                 preflop_odds_table = preflop_odds_table, N = N)
         end
+    end
     return returns_table
 end
