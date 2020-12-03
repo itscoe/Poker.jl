@@ -1,4 +1,4 @@
-using Distributions
+using Distributions, ProgressMeter
 
 function bet(dealer::String, self_strat::Float64, opp_strat::Float64,
   self_prob::Float64, opp_prob::Float64, self_return::Float64,
