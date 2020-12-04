@@ -1,5 +1,17 @@
 using ProgressMeter
 
+"""
+    +(self, table[, N])
+
+Computes with N (default 1,000) Monte Carlo simulations the odds of the hand
+winning the showdown given the cards shown on the table
+
+# Examples
+```jldoctest
+julia> .1 < calculate_odds(deal(fresh_deck, 2)[1], deal(fresh_deck, 0)[1]) < .9
+true
+```
+"""
 function calculate_odds(self::Hand, table::Hand; N = 1_000)
     wins = 0
     for i = 1:N
@@ -13,6 +25,14 @@ function calculate_odds(self::Hand, table::Hand; N = 1_000)
     return wins / N
 end
 
+"""
+    get_preflop_odds([N])
+
+Computes with N (default 1,000) Monte Carlo simulations the odds of the each
+starting hand winning the showdown given no cards shown on the table yet.
+This table is optionally used to speed up game calculations.
+
+"""
 function get_preflop_odds(; N = 1000)
     preflop_odds = zeros(52, 52)
     @showprogress for i = 1:52, j = 1:52

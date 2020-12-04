@@ -1,5 +1,15 @@
 using Distributions, ProgressMeter
 
+"""
+    bet(dealer, self_strat, opp_strat, self_prob, opp_prob, self_return,
+        opp_return, pot, big_blind)
+
+Processes the bets for the players, given thresholds at which each player will
+not put more money into the game, and the calculated odds of each player
+winning the showdown. Also returns whether the whole get_return function should
+return
+
+"""
 function bet(dealer::String, self_strat::Float64, opp_strat::Float64,
   self_prob::Float64, opp_prob::Float64, self_return::Float64,
   opp_return::Float64, pot::Float64, big_blind::Float64)
@@ -40,6 +50,14 @@ function bet(dealer::String, self_strat::Float64, opp_strat::Float64,
     return to_return, self_return, opp_return, pot
 end
 
+"""
+    get_return(self_strat, opp_strat[, preflop_odds_table])
+
+Returns the self return after 1 simulated game, given the singular thresholds
+at which either player will not put more money into the game. Optional
+optimization is available by specifying a pre-calculated preflop odds table
+
+"""
 function get_return(self_strat::Float64, opp_strat::Float64;
   preflop_odds_table::Array{Float64, 2} = zeros(52, 52))
     using_preflop_odds = preflop_odds_table == zeros(52, 52)
@@ -123,6 +141,15 @@ function get_return(self_strat::Float64, opp_strat::Float64;
     return self_return
 end
 
+"""
+    get_return(self_strat, opp_strat[, preflop_odds_table])
+
+Returns the self return after 1 simulated game, given the multiple thresholds
+(one for each round of betting; ie, 4) at which either player will not put more
+money into the game. Optional optimization is available by specifying a
+pre-calculated preflop odds table
+
+"""
 function get_return(self_strat::Array{Float64}, opp_strat::Array{Float64};
   preflop_odds_table::Array{Float64, 2} = zeros(52, 52))
     using_preflop_odds = preflop_odds_table == zeros(52, 52)
@@ -216,12 +243,24 @@ function get_returns(self_strat::Float64, opp_strat::Float64;
         preflop_odds_table = preflop_odds_table), 1:N))
 end
 
+"""
+    get_returns(self_strat, opp_strat[, preflop_odds_table, N])
+
+Wrapping of get_return, but the mean of N (default 5,000) times
+
+"""
 function get_returns(self_strat::Array{Float64}, opp_strat::Array{Float64};
   preflop_odds_table::Array{Float64, 2} = zeros(52, 52), N = 5_000)
     return mean(map(x -> get_return(self_strat, opp_strat,
         preflop_odds_table = preflop_odds_table), 1:N))
 end
 
+"""
+    get_returns(self_strat, opp_strat[, preflop_odds_table, N])
+
+Wrapping of get_return, but the mean of N (default 100) times
+
+"""
 function get_returns(self_strat::Array{Float64};
   preflop_odds_table::Array{Float64, 2} = zeros(52, 52), N = 100)
     return mean(map(x -> get_return(self_strat,
@@ -229,6 +268,15 @@ function get_returns(self_strat::Array{Float64};
         preflop_odds_table = preflop_odds_table), 1:N))
 end
 
+"""
+    get_returns_table([preflop_odds_table, N])
+
+Calculation of a table of average returns across a gamut of singular threshold
+strategies, with the optional optimization of pre-calculating the preflop odds
+table. Default N is 5,000 simulations per pair of strategies (total 50,000,000
+games)
+
+"""
 function get_returns_table(;
   preflop_odds_table::Array{Float64, 2} = zeros(52, 52), N = 5_000)
     returns_table = zeros(100, 100)
