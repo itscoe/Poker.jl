@@ -17,5 +17,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/itscoe/Poker.jl",
+    repo="github.com/itscoe/Poker.jl.git",
 )
