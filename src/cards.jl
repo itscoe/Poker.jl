@@ -29,12 +29,6 @@ Adds two hands together, combining their cards into a single hand. Probably more
 akin to a union, but duplicate cards are not supported, which helps catch bugs
 and ensures hands are exactly the length of the two inputs hands added.
 
-# Examples
-```jldoctest
-julia> deal(fresh_deck, 2)[1] + deal(fresh_deck, 2)[1]
-Cards.Hand with 4 elements:
-[...]
-```
 """
 function Base.:+(x::Hand, y::Hand)
     new_hand = Array{Card}(undef, 0)
@@ -55,12 +49,6 @@ set theory's subtraction, as cards that are attempted to be subtracted that
 aren't in the original hand are ignored. This should probably at least warn the
 user for most poker-related use cases.
 
-# Examples
-```jldoctest
-julia> fresh_deck - deal(fresh_deck, 2)[1]
-Cards.Hand with 50 elements:
-[...]
-```
 """
 function Base.:-(x::Hand, y::Hand)
     new_hand = Array{Card}(undef, 0)
@@ -78,12 +66,6 @@ end
 Returns both a new hand of n cards, drawn without replacement from the deck,
 and the deck without the cards that were drawn
 
-# Examples
-```jldoctest
-julia> deal(fresh_deck, 2)[1]
-Cards.Hand with 2 elements:
-[...]
-```
 """
 function deal(deck::Hand, n::Integer)
     new_hand = Array{Card}(undef, n)
@@ -100,12 +82,6 @@ end
 
 Converts a Hand (from Cards.jl) to an array of cards
 
-# Examples
-```jldoctest
-julia> cards(deal(fresh_deck, 2)[1])
-2-element Array{Cards.Card,1}:
-[...]
-```
 """
 function cards(hand::Hand)
     cards_to_return = Array{Card}(undef, length(hand))
@@ -122,11 +98,6 @@ Compares if a card is less than another card based on its position in a fresh
 deck. This isn't actually used in Poker.jl right now, but is probably a handy
 functionality for any extension of Cards.jl
 
-# Examples
-```jldoctest
-julia> deal(fresh_deck, 2)[1][1] < deal(fresh_deck, 2)[1][1] || true
-true
-```
 """
 Base.:isless(x::Card, y::Card) = findfirst(isequal(x), fresh_deck_cards) <
     findfirst(isequal(y), fresh_deck_cards)
@@ -166,11 +137,6 @@ Compares two hands to one another, using Texas Hold'em rules. Ties evaluate as
 false. If larger hands are provided than five cards, the maximal combination of
 five cards is used for the comparison.
 
-# Examples
-```jldoctest
-julia> isless(deal(fresh_deck, 7)[1], deal(fresh_deck, 7)[1]) || true
-true
-```
 """
 function Base.:isless(x::Hand, y::Hand)
     hand1 = length(x) > 5 ? maximum(Hand.(combinations(x, 5))) : x
@@ -189,11 +155,6 @@ end
 
 Syntactic sugar for isless(x, y)
 
-# Examples
-```jldoctest
-julia> deal(Poker.fresh_deck, 7)[1] < deal(Poker.fresh_deck, 7)[1] || true
-true
-```
 """
 Base.:<(x::Hand, y::Hand) = isless(x, y)
 
@@ -202,10 +163,5 @@ Base.:<(x::Hand, y::Hand) = isless(x, y)
 
 Syntactic sugar for isless(y, x)
 
-# Examples
-```jldoctest
-julia> deal(Poker.fresh_deck, 7)[1] > deal(Poker.fresh_deck, 7)[1] || true
-true
-```
 """
 Base.:>(x::Hand, y::Hand) = isless(y, x)

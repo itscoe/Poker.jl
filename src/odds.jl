@@ -6,11 +6,6 @@ using ProgressMeter
 Computes with N (default 1,000) Monte Carlo simulations the odds of the hand
 winning the showdown given the cards shown on the table
 
-# Examples
-```jldoctest
-julia> .1 < calculate_odds(deal(fresh_deck, 2)[1], deal(fresh_deck, 0)[1]) < .9
-true
-```
 """
 function calculate_odds(self::Hand, table::Hand; N = 1_000)
     wins = 0
